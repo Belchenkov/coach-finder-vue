@@ -1,5 +1,5 @@
 <template>
-
+  CoachRegistration
 </template>
 
 <script>

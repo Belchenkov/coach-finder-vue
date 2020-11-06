@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router";
 
 import NotFound from "@/pages/NotFound";
 import CoachesList from "@/pages/coaches/CoachesList";
@@ -8,7 +8,7 @@ import ContactCoach from "@/pages/requests/ContactCoach";
 import RequestsReceived from "@/pages/requests/RequestsReceived";
 
 const router = createRouter({
-    history: createWebHistory,
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
