@@ -39,7 +39,8 @@
             v-model="areas"
             type="checkbox"
             id="frontend"
-            value="frontend" />
+            value="frontend"
+        />
         <label for="frontend">Frontend Development</label>
       </div>
       <div>
@@ -47,7 +48,8 @@
             v-model="areas"
             type="checkbox"
             id="backend"
-            value="backend" />
+            value="backend"
+        />
         <label for="backend">Backend Development</label>
       </div>
       <div>
@@ -55,7 +57,8 @@
             v-model="areas"
             type="checkbox"
             id="career"
-            value="career" />
+            value="career"
+        />
         <label for="career">Career Advisory</label>
       </div>
     </div>
@@ -66,6 +69,9 @@
 <script>
 export default {
   name: "CoachForm",
+  emits: [
+      'save-data'
+  ],
   data() {
     return {
       firstName: "",
@@ -85,7 +91,7 @@ export default {
         areas: this.areas
       };
 
-      console.log(formData)
+      this.$emit('save-data', formData);
     }
   }
 }
