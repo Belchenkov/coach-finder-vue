@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="">
+  <form @submit.prevent="submitForm">
     <div class="form-control">
       <label for="email">Your E-Mail</label>
       <input
@@ -9,7 +9,7 @@
       />
     </div>
     <div class="form-control">
-      <label for="message">Your E-Mail</label>
+      <label for="message">Your Message</label>
       <textarea
           id="message"
           rows="5"
@@ -48,7 +48,13 @@ export default {
         return;
       }
 
+      this.$store.dispatch('requests/contactCoach', {
+        email: this.email,
+        message: this.message,
+        coachId: this.$route.params.id
+      });
 
+      this.$router.replace('/coaches');
     },
   },
 }
