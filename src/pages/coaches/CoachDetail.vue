@@ -49,7 +49,7 @@ export default {
       return this.selectedCoach.hourlyRate;
     },
     contactLink() {
-      return `${this.$route.path}/${this.id}/contact`;
+      return `${this.$route.path}/contact`;
     },
     description() {
       return this.selectedCoach.description;
