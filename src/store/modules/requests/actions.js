@@ -6,7 +6,6 @@ export default {
             userEmail: email,
             message,
         };
-
         commit('addRequest', newRequest);
     }
 }
