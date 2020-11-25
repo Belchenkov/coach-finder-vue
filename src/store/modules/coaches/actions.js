@@ -1,5 +1,6 @@
 export default {
-    registerCoach(context, data) {
+    async registerCoach(context, data) {
+        const userId = context.rootGetters.userId;
         const coachData = {
             id: context.rootGetters.userId,
             firstName: data.first,
@@ -9,6 +10,22 @@ export default {
             areas: data.areas
         };
 
-        context.commit('registerCoach', coachData);
+        try {
+            const res = await fetch(`https://coach-finder-e361c.firebaseio.com/coaches/${userId}.json`, {
+                method: 'PUT',
+                body: JSON.stringify(coachData)
+            });
+
+            if (!res.ok) {
+                // error ...
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        context.commit('registerCoach', {
+            ...coachData,
+            id: userId
+        });
     }
 };
