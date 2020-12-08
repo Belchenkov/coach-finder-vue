@@ -33,7 +33,7 @@ export default {
         const data = await res.json();
 
         if (!res.ok) {
-            return false;
+            throw new Error(data.message || 'Failed to fetch');
         }
 
         const coaches = [];
