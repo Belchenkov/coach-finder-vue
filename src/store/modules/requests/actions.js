@@ -32,16 +32,15 @@ export default {
 
         const requests = [];
 
-        for (const key in res) {
+        for (const key in data) {
             const request = {
                 id: key,
                 coachId,
-                userEmail: res[key].userEmail,
-                message: res[key].message
+                userEmail: data[key].userEmail,
+                message: data[key].message
             };
             requests.push(request);
         }
-
         commit('setRequests', requests);
     }
 }
