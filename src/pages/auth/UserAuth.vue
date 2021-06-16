@@ -1,4 +1,19 @@
 <template>
+  <div>
+    <base-dialog
+      :show="!!error"
+      title="An error occurred"
+      @close="handleError"
+    >
+      <p>{{ error }}</p>
+    </base-dialog>
+    <base-dialog
+        fixed
+        :show="isLoading"
+        title="Authenticating..."
+    >
+      <base-spinner></base-spinner>
+    </base-dialog>
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -16,6 +31,7 @@
         </div>
       </form>
     </base-card>
+  </div>
 </template>
 
 <script>
@@ -26,7 +42,9 @@ export default {
       email: '',
       password: '',
       formIsValid: true,
-      mode: 'login'
+      mode: 'login',
+      isLoading: false,
+      error: null
     }
   },
   computed: {
@@ -46,7 +64,7 @@ export default {
     },
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.formIsValid = true;
 
       if (this.email === '' || !this.email.includes('@') || this.password.length < 6) {
@@ -54,14 +72,22 @@ export default {
         return;
       }
 
-      if (this.mode === 'login') {
-        console.log('login')
-      } else {
-        this.$store.dispatch('auth/signup', {
-          email: this.email,
-          password: this.password
-        });
+      this.isLoading = true;
+
+      try {
+        if (this.mode === 'login') {
+          console.log('login')
+        } else {
+          await this.$store.dispatch('auth/signup', {
+            email: this.email,
+            password: this.password
+          });
+        }
+      } catch (err) {
+        this.error = err.message || 'Failed to authenticate, try later. Check your login data.';
       }
+
+      this.isLoading = false;
     },
     switchAuthMode() {
       if (this.mode === 'login') {
@@ -69,6 +95,9 @@ export default {
       } else {
         this.mode = 'login';
       }
+    },
+    handleError() {
+      this.error = null;
     }
   }
 }
