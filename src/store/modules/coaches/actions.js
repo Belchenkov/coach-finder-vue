@@ -1,6 +1,6 @@
 export default {
     async registerCoach(context, data) {
-        const userId = context.rootGetters.userId;
+        const userId = context.rootGetters["auth/userId"];
         const coachData = {
             id: context.rootGetters.userId,
             firstName: data.first,
@@ -10,8 +10,10 @@ export default {
             areas: data.areas
         };
 
+        const token = context.rootGetters["auth/token"];
+        console.log(userId, token)
         try {
-            const res = await fetch(`https://coach-finder-e361c.firebaseio.com/coaches/${userId}.json`, {
+            const res = await fetch(`https://coach-finder-e361c.firebaseio.com/coaches/${userId}.json?auth=${token}`, {
                 method: 'PUT',
                 body: JSON.stringify(coachData)
             });

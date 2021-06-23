@@ -17,12 +17,11 @@ export default {
             throw new Error(data.message || 'Failed to login.');
         }
 
-        console.log(data);
         commit('setUser', {
             token: data.idToken,
             userId: data.localId,
             tokenExpiration: data.expiresIn,
-        })
+        });
     },
     async signup({ commit }, { email, password }) {
         const key = 'AIzaSyDbQeUq2bYm0cwhn5wbZbiurugltmYnq-U';
