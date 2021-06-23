@@ -1,3 +1,5 @@
+let timer;
+
 export default {
     async login({ dispatch }, payload) {
         return dispatch('auth', {
@@ -11,7 +13,7 @@ export default {
             mode: 'signup'
         });
     },
-    async auth({ commit }, { mode, email, password }) {
+    async auth({ commit, dispatch }, { mode, email, password }) {
         const key = 'AIzaSyDbQeUq2bYm0cwhn5wbZbiurugltmYnq-U';
         let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${key}`;
 
@@ -33,33 +35,54 @@ export default {
             throw new Error(data.message || 'Failed to auth. Check your data.');
         }
 
+        const expiresIn = +data.expiresIn * 1000;
+        const expirationDate = new Date().getTime() + expiresIn;
+
         localStorage.setItem('token', data.idToken);
         localStorage.setItem('userId', data.localId);
-        localStorage.setItem('tokenExpiration', data.expiresIn);
+        localStorage.setItem('tokenExpiration', expirationDate);
+
+        timer = setTimeout(() => {
+            dispatch('logout');
+        }, expiresIn);
 
         commit('setUser', {
             token: data.idToken,
-            userId: data.localId,
-            tokenExpiration: data.expiresIn,
+            userId: data.localId
         })
     },
-    tryLogin({ commit }) {
+    tryLogin({ commit, dispatch }) {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
+        const tokenExpiration = localStorage.getItem('tokenExpiration');
+
+        const expiresIn = +tokenExpiration - new Date().getTime();
+
+        if (expiresIn < 0) {
+            return;
+        }
+
+        timer = setTimeout(() => {
+            dispatch('logout');
+        }, expiresIn);
 
         if (token && userId) {
             commit('setUser', {
                 token,
-                userId,
-                tokenExpiration: null
+                userId
             })
         }
     },
     logout({ commit }) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('tokenExpiration');
+
+        clearTimeout(timer);
+
         commit('setUser', {
             token: null,
-            userId: null,
-            tokenExpiration: null
+            userId: null
         });
     }
 };
