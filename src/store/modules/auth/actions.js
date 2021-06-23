@@ -33,11 +33,27 @@ export default {
             throw new Error(data.message || 'Failed to auth. Check your data.');
         }
 
+        localStorage.setItem('token', data.idToken);
+        localStorage.setItem('userId', data.localId);
+        localStorage.setItem('tokenExpiration', data.expiresIn);
+
         commit('setUser', {
             token: data.idToken,
             userId: data.localId,
             tokenExpiration: data.expiresIn,
         })
+    },
+    tryLogin({ commit }) {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (token && userId) {
+            commit('setUser', {
+                token,
+                userId,
+                tokenExpiration: null
+            })
+        }
     },
     logout({ commit }) {
         commit('setUser', {
