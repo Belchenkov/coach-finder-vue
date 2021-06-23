@@ -21,9 +21,10 @@ export default {
         commit('addRequest', newRequest);
     },
     async fetchRequests({ rootGetters, commit }) {
-        const coachId = rootGetters.userId;
+        const coachId = rootGetters["auth/userId"];
+        const token = rootGetters["auth/token"];
 
-        const res = await fetch(`https://coach-finder-e361c.firebaseio.com/requests/${coachId}.json`);
+        const res = await fetch(`https://coach-finder-e361c.firebaseio.com/requests/${coachId}.json?auth=${token}`);
         const data = await res.json();
 
         if (!res.ok) {

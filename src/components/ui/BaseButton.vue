@@ -40,7 +40,7 @@ export default {
     border: 1px solid #2f6f71;
     color: white;
     cursor: pointer;
-    border-radius: 30px;
+    border-radius: 5px;
     margin-right: 0.5rem;
     display: inline-block;
     font-weight: bold;
