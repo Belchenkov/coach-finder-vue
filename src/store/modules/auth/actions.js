@@ -43,7 +43,7 @@ export default {
         localStorage.setItem('tokenExpiration', expirationDate);
 
         timer = setTimeout(() => {
-            dispatch('logout');
+            dispatch('autoLogout');
         }, expiresIn);
 
         commit('setUser', {
@@ -63,7 +63,7 @@ export default {
         }
 
         timer = setTimeout(() => {
-            dispatch('logout');
+            dispatch('autoLogout');
         }, expiresIn);
 
         if (token && userId) {
@@ -84,5 +84,9 @@ export default {
             token: null,
             userId: null
         });
+    },
+    autoLogout({ commit, dispatch }) {
+        dispatch('logout');
+        commit('setAutoLogout');
     }
 };
