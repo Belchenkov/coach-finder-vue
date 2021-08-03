@@ -44,6 +44,7 @@ export default {
 
 body {
   margin: 0;
+  background: url("./assets/bg.png") repeat;
 }
 
 .route-enter-from {
